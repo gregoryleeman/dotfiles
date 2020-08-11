@@ -1,5 +1,7 @@
 # /bin/bash
 
+source ~/.bash_xtra.sh
+
 export PS1='[\u@\h]\$ '
 set -o vi
 
@@ -29,5 +31,3 @@ bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 set show-all-if-ambiguous on
 set completion-ignore-case on
-
-source ~/.bash_xtra.sh
