@@ -1,0 +1,18 @@
+#!/usr/bin/python
+import argparse
+import os
+import re
+parser = argparse.ArgumentParser()
+parser.add_argument("-d", "--dir", default=os.getcwd(), help="directory where files are (default current directory)")
+parser.add_argument("-f", "--filter", default="^[^.].*", help="regex filter files to apply rename to (default '^[^.].*')")
+parser.add_argument("-s", "--search", default="^[^\.]*", help="regex what should be changed (defualt '^[^\.]*')")
+parser.add_argument("-r", "--replace", required=True, help="(required)")
+parser.add_argument("--dry", action="store_true", help="dry run (don't rename files)")
+args = parser.parse_args()
+for filename in os.listdir(args.dir):
+	if re.search(args.filter, filename):
+		src = filename
+		dst = re.sub(args.search, args.replace, filename)
+		print(src + " -> " + dst)
+		if not(args.dry):
+			os.rename(src, dst)
