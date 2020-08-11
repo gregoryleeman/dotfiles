@@ -9,10 +9,56 @@ setl nowrap
 setl fo-=o
 
 fu! SearchFoldText() " {{{
-	let start = v:foldstart
-	let end = v:foldend
-	return g:foldtext . " " . repeat("-", 79 - len(g:foldtext) - 1) . repeat(" ", winwidth(0))
-	return getline(start) . " +" . repeat(" ", winwidth(0))
+	if getline(v:foldstart) =~ "^z$"
+		return repeat("-", 79) . repeat(" ", winwidth(0))
+	else
+		return repeat(" ", indent(v:foldstart)) . trim(getline(v:foldstart))[0:-1] . " +" . repeat(" ", winwidth(0))
+	endif
+endfu
+" }}}
+
+fu! Fold(search) " {{{
+	let foldstart = 0
+	let foldend = 0
+	let foldmatch = ""
+	for i in range(1, line('$'))
+		let line = getline(i)
+		let linematch = matchstr(line, a:search)
+		if line =~ a:search && linematch != foldmatch || line =~ "^# vim.*"
+			let foldend = i - 1 
+			if foldstart != 0 
+				execute foldstart.",".foldend."fold"
+			endif
+			let foldstart = i
+			let foldmatch = linematch
+		endif
+	endfor
+endfu
+" }}}
+
+fu! Fold2(start,end) " {{{
+	let foldinit = 0
+	let foldstart = 0
+	let foldend = 0
+	let foldmatch = ""
+	for i in range(1, line('$'))
+		let line = getline(i)
+		if foldinit == 1 && line =~ a:end || line =~ "^# vim.*"
+			let foldend = i - 1 
+			execute foldstart.",".foldend."fold"
+			let foldinit = 0
+		endif
+		if foldinit == 0 && line =~ a:start
+			let foldstart = i
+			let foldinit = 1
+		endif
+	endfor
+endfu
+" }}}
+
+fu FoldAll() " {{{
+	:call Fold2("^# +[a-z0-9]*_[a-z0-9]*", "^# +")
+	:call Fold2("^# +[a-z0-9]*$", "^# +[a-z0-9]*$")
 endfu
 
 " }}}
@@ -22,8 +68,7 @@ fu! Sort(search) " {{{
 	let g:foldtext = a:search
 	:call SearchFoldRestore()
 	:sort
-	:sort /^[^a-zA-Z]/r
-	:sort /#[0-9]\+/r
+	:sort /^[^a-zA-Z*-]/r
 	:sort /^\$/r
 	:sort /^[xlno] /r
 	:sort /^(/r
@@ -31,7 +76,7 @@ fu! Sort(search) " {{{
 		execute "normal!
 			\:sort /".search."/r\<CR>
 			\:sort /^# vim/r\<CR>
-			\/".search."\\|^\\(\\(.*[@+].*\\)\\@!.\\)*$\<CR>"
+			\/".search."\\|^\\(\\(.*[@+z].*\\)\\@!.\\)*$\<CR>"
 		:call SearchFold()
 		execute "normal /".search."\<CR>ggn0"
 	else
@@ -40,35 +85,7 @@ fu! Sort(search) " {{{
 		:call SearchFold()
 	endif
 endfu
-
 " }}}
-command! -nargs=1 Sort :call Sort(<f-args>)
-nmap <buffer> si :Sort ^.*(\S)<CR>
-nmap <buffer> sp :Sort +\S*<CR>
-nmap <buffer> sc :Sort @\S*<CR>
-
-nmap <buffer> sd :Sort +admin\S*<CR>
-nmap <buffer> sw :Sort +work\S*<CR>
-nmap <buffer> sW :Sort \(+work\S*.*\)\@<=@<CR>
-nmap <buffer> sa :Sort +art\S*<CR>
-nmap <buffer> sA :Sort \(+art\S*.*\)\@<=@<CR>
-nmap <buffer> se :Sort +health\S*<CR>
-nmap <buffer> sE :Sort \(+health\S*.*\)\@<=@<CR>
-nmap <buffer> sq :Sort +mind\S*<CR>
-nmap <buffer> sQ :Sort \(+mind\S*.*\)\@<=@<CR>
-nmap <buffer> sc :Sort +social\S*<CR>
-nmap <buffer> sC :Sort \(+social\S*.*\)\@<=@<CR>
-nmap <buffer> sf :Sort +family\S*<CR>
-nmap <buffer> sF :Sort \(+family\S*.*\)\@<=@<CR>
-nmap <buffer> sz :Sort +soul\S*<CR>
-nmap <buffer> sZ :Sort \(+soul\S*.*\)\@<=@<CR>
-
-nmap <buffer> sr :Sort ([HR])<CR>
-nmap <buffer> sn :Sort @[24]\S*<CR>
-nmap <buffer> sh :Sort @[0135]\S*<CR>
-nmap <buffer> sx :Sort ^[xl] <CR>
-nmap <buffer> sl :Sort ^[xl] <CR>
-nmap <buffer> ss yiw:Sort <C-r>" <CR>
 
 fu! NewLine(line1, ex) " {{{
 	if a:ex ==# "o"
@@ -81,14 +98,11 @@ fu! NewLine(line1, ex) " {{{
 	let line = getline(line1)
 	let project = matchstr(line, "+\\S\\+")
 	let context = matchstr(line, "@\\S\\+")
-	execute "normal! i " . project . " " . context . "\<Esc>:s/  / /e\<CR>0"
+	execute "normal! i " . project . " " . context . "\<Esc>:s/  / /e\<CR>:s/ $//e\<CR>0"
 	startinsert
 endfu 
 
 " }}}
-command! -nargs=1 -range NewLine :call NewLine(<line1>, <f-args>)
-nmap <buffer> o :NewLine o<CR>
-nmap <buffer> O :NewLine O<CR>
 
 fu! Priority(line1, line2, prio) " {{{
 	:normal! mm
@@ -96,18 +110,7 @@ fu! Priority(line1, line2, prio) " {{{
 	execute "normal!:".a:line1.",".a:line2."s/^\\(.*(\\S)\\)\\@!/(".a:prio.") /ge\<CR>"
 	:normal! `mj
 endfu 
-
 " }}}
-command! -nargs=1 -range Priority :call Priority(<line1>, <line2>, <f-args>) 
-map <buffer> <leader>a :Priority A<CR>
-map <buffer> <leader>b :Priority B<CR>
-map <buffer> <leader>c :Priority C<CR>
-map <buffer> <leader>s :Priority S<CR>
-map <buffer> <leader>w :Priority W<CR>
-map <buffer> <leader>m :Priority M<CR>
-map <buffer> <leader>r :Priority R<CR>
-map <buffer> <leader>h :Priority H<CR>
-map <buffer> <leader>u :Priority U<CR>
 
 fu! Done(line1, line2, n) " {{{
 	:normal! mm
@@ -117,36 +120,81 @@ fu! Done(line1, line2, n) " {{{
 		\:".a:line1.",".a:line2."s/^%\\S /".a:n." /e\<CR>
 		\:".a:line1.",".a:line2."s/^%/".a:n." /e\<CR>"
 	:normal! `mj
-endfu " }}}
-command! -range -nargs=1 Done :call Done(<line1>,<line2>,<f-args>)
-map <buffer> <leader>x :Done x<CR>
-map <buffer> <leader>l :Done l<CR>
+endfu 
+" }}}
 
 fu! Tag(line1, line2, tag) " {{{
 	:normal! mm
-	execute "normal!:".a:line1.",".a:line2."s/@\\(".a:tag."\\)\\@=/%/e\<CR>"
+	execute "normal!:".a:line1.",".a:line2."s/@".a:tag."/%/e\<CR>"
 	execute "normal!:".a:line1.",".a:line2."s/@\\S*/@".a:tag."/e\<CR>"
-	execute "normal!:".a:line1.",".a:line2."s/\\(^.*[%@].*\\)\\@<!\\s*$/ @".a:tag."/e\<CR>"
-	execute "normal!:".a:line1.",".a:line2."s/\\s*%\\S*//e\<CR>"
+	execute "normal!:".a:line1.",".a:line2."s/\\(^.*[@%].*\\)\\@<!\\s*$/ @".a:tag."/e\<CR>"
+	execute "normal!:".a:line1.",".a:line2."s/\\s*%//e\<CR>"
 	:normal! `mj
-endfu " }}}
-command! -nargs=1 -range Tag :call Tag(<line1>, <line2>, <f-args>) 
-map <buffer> <leader>0 :Tag 0<CR>
-map <buffer> <leader>1 :Tag 1<CR>
-map <buffer> <leader>2 :Tag 2<CR>
-map <buffer> <leader>3 :Tag 3<CR>
-map <buffer> <leader>4 :Tag 4<CR>
-map <buffer> <leader>5 :Tag 5<CR>
-map <buffer> <leader>6 :Tag 6<CR>
-map <buffer> <leader>7 :Tag 7<CR>
-map <buffer> <leader>8 :Tag 8<CR>
-map <buffer> <leader>9 :Tag 9<CR>
+endfu 
+" }}}
 
 fu! Update() " {{{
-	:%s/^l //g
+	:%s/^[lk] //g
 	:%s/^x \(([HR])\)\@=//g
 	:%s/\(^x .*\)\@<= @\S*//g
-endfu " }}}
+endfu 
+" }}}
+
+command! -nargs=1 Sort :call Sort(<f-args>)
+command! -nargs=1 Fold :call Fold(<f-args>)
+command! -nargs=1 Fold2 :call Fold2(<f-args>)
+command! -nargs=1 -range NewLine :call NewLine(<line1>, <f-args>)
+command! -nargs=1 -range Priority :call Priority(<line1>, <line2>, <f-args>) 
+command! -nargs=1 -range Done :call Done(<line1>,<line2>,<f-args>)
+command! -nargs=1 -range Tag :call Tag(<line1>, <line2>, <f-args>) 
 command! Update :call Update() 
 
-:normal si
+map <buffer> <leader>a :Priority A<CR>
+map <buffer> <leader>b :Priority B<CR>
+map <buffer> <leader>c :Priority C<CR>
+map <buffer> <leader>s :Priority S<CR>
+map <buffer> <leader>w :Priority W<CR>
+map <buffer> <leader>m :Priority M<CR>
+map <buffer> <leader>r :Priority R<CR>
+map <buffer> <leader>u :Priority U<CR>
+
+map <buffer> <leader>x :Done x<CR>
+map <buffer> <leader>l :Done l<CR>
+
+map <buffer> <leader>n :Tag n<CR>
+map <buffer> <leader>h :Tag h<CR>
+
+map <buffer> <leader>0 :Tag 0day<CR>
+map <buffer> <leader>1 :Tag 1morn<CR>
+map <buffer> <leader>2 :Tag 2work<CR>
+map <buffer> <leader>3 :Tag 3eve<CR>
+map <buffer> <leader>4 :Tag 4paint<CR>
+map <buffer> <leader>5 :Tag 5bed<CR>
+map <buffer> <leader>6 :Tag 6tomorrow<CR>
+
+nmap <buffer> sp :Sort +\S*<CR>:call FoldAll()<CR>
+nmap <buffer> s1 sp:/+1<CR>zO<Esc>
+nmap <buffer> s2 sp:/+2<CR>zO<Esc>
+nmap <buffer> s3 sp:/+3<CR>zO<Esc>
+nmap <buffer> s4 sp:/+4<CR>zO<Esc>
+nmap <buffer> s5 sp:/+5<CR>zO<Esc>
+nmap <buffer> s6 sp:/+6<CR>zO<Esc>
+nmap <buffer> s7 sp:/+7<CR>zO<Esc>
+nmap <buffer> s8 sp:/+8<CR>zO<Esc>
+
+nmap <buffer> si :Sort ^.*(\S)<CR>
+nmap <buffer> sn :Sort @\S*<CR>
+
+nmap <buffer> sd s1
+nmap <buffer> sw s2
+nmap <buffer> sa s3
+nmap <buffer> se s4
+nmap <buffer> sq s5
+nmap <buffer> ss s6
+nmap <buffer> sc s7
+nmap <buffer> sf s8
+
+nmap <buffer> o :NewLine o<CR>
+nmap <buffer> O :NewLine O<CR>
+
+:normal sp

@@ -17,41 +17,39 @@ setlocal nonumber
 setlocal foldexpr=FoldLevel(v:lnum)
 setlocal foldmethod=expr
 
-fu! Search(search) " {{{
-	execute "normal! /".a:search."\<CR>"
-	:call SearchFold()
-endfu " }}}
-command! -nargs=1 Search :call Search(<f-args>) 
-map <buffer> sa :Search \\[a\\]<CR>
-map <buffer> sb :Search \\[b\\]<CR>
-map <buffer> sc :Search \\[c\\]<CR>
-map <buffer> so :Search \\[o\\]<CR>
-map <buffer> sw :Search \\[w\\]<CR>
-map <buffer> sm :Search \\[m\\]<CR>
-map <buffer> sr :Search \\[r\\]<CR>
-map <buffer> sx :Search \\[x\\]<CR>
-map <buffer> sl :Search \\[l\\]<CR>
-map <buffer> sn :Search @today<CR>
+" fu! Search(search) " {{{
+" 	execute "normal! /".a:search."\<CR>"
+" 	:call searchfold#searchfold#()
+" endfu " }}}
+" command! -nargs=1 Search :call Search(<f-args>) 
 
-fu! Priority(line1, line2, prio) " {{{
+" fu! Tag(line1, line2, tag) " {{{
+" 	:normal! mm
+" 	execute "normal!:".a:line1.",".a:line2."s/@".a:tag."\\s*/%/e\<CR>"
+" 	execute "normal!:".a:line1.",".a:line2."s/\\(%.*\\)\\@<!\\s*$/ @".a:tag."/e\<CR>"
+" 	execute "normal!:".a:line1.",".a:line2."s/%//e\<CR>"
+" 	:normal! `mj
+" endfu 
+" " }}}
+" command! -range -nargs=1 Tag :call Tag(<line1>,<line2>,<f-args>)
+" map <buffer> <leader>n :Tag today<CR>
+" map <buffer> <leader>w :Tag waiting<CR>
+" map <buffer> <leader>m :Tag maybe<CR>
+" map <buffer> <leader>t :Tag tomorrow<CR>
+" map <buffer> <leader>a :Tag a<CR>
+" map <buffer> <leader>b :Tag b<CR>
+" map <buffer> <leader>c :Tag c<CR>
+
+fu! Done(line1, line2, n) " {{{
 	:normal! mm
-	execute "normal!:".a:line1.",".a:line2."s/\\[".a:prio."\\]/[n]/e\<CR>"
-	execute "normal!:".a:line1.",".a:line2."s/\\[[^n]\\]/[".a:prio."]/e\<CR>"
-	execute "normal!:".a:line1.",".a:line2."s/\\[n\\]/[ ]/e\<CR>"
+	execute "normal!
+		\:".a:line1.",".a:line2."s/\\(\\S\\)\\@=/%/e\<CR>
+		\:".a:line1.",".a:line2."s/%".a:n." //e\<CR>
+		\:".a:line1.",".a:line2."s/%\\S /".a:n." /e\<CR>
+		\:".a:line1.",".a:line2."s/%/".a:n." /e\<CR>"
 	:normal! `mj
-endfu 
-
-" }}}
-command! -nargs=1 -range Priority :call Priority(<line1>, <line2>, <f-args>) 
-map <buffer> <leader>a :Priority a<CR>
-map <buffer> <leader>b :Priority b<CR>
-map <buffer> <leader>c :Priority c<CR>
-map <buffer> <leader>o :Priority o<CR>
-map <buffer> <leader>s :Priority s<CR>
-map <buffer> <leader>m :Priority m<CR>
-map <buffer> <leader>w :Priority w<CR>
-map <buffer> <leader>r :Priority r<CR>
-map <buffer> <leader>x :Priority x<CR>
-map <buffer> <leader>l :Priority l<CR>
-
-
+endfu " }}}
+command! -range -nargs=1 Done :call Done(<line1>,<line2>,<f-args>)
+map <buffer> <leader>x :Done x<CR>
+map <buffer> <leader>n :Done n<CR>
+map <buffer> <leader>l :Done l<CR>

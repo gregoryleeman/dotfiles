@@ -1,8 +1,9 @@
 let b:current_syntax = "todo"
 
+exe "hi! Folded cterm=NONE ctermfg=".g:base2." ctermbg=NONE"
 
 syn match Ta /^(A)/ containedin=ALL
-hi def link Ta orange
+hi def link Ta red
 syn match Tta /\(^(A)\)\@<=.*/
 hi def link Tta base1
 
@@ -10,11 +11,6 @@ syn match Tb /^(B)/ containedin=ALL
 hi def link Tb blue
 syn match Ttb /\(^(B)\)\@<=.*/
 hi def link Ttb base1
-
-syn match Tu /^(U)/ containedin=ALL
-hi def link Tu base1
-syn match Ttu /\(^(U)\)\@<=.*/
-hi def link Ttu base1
 
 syn match Tc /^(C)/ containedin=ALL
 hi def link Tc yellow
@@ -32,7 +28,7 @@ syn match Tte /\(^(E)\)\@<=.*/
 hi def link Tte base1
 
 syn match Th /^(H)/ containedin=ALL
-hi def link Th yellow
+hi def link Th orange
 syn match Tth /\(^(H)\)\@<=.*/
 hi def link Tth base1
 
@@ -51,25 +47,41 @@ hi def link Tm violet
 syn match Ttm /\(^(M)\)\@<=.*/
 hi def link Ttm base01
 
-" syn match Tn /@\S\+/ containedin=ALL
-" hi def link Tn base2u
-syn match Ttn /.*@\S\+.*/
-hi def link Ttn base2
 
-syn match Tdone              /^x .*/
-hi def link Tdone green
-syn match Tmissed            /^l .*/
-hi def link Tmissed red
+syn match Tday /@0day\>/ containedin=ALL
+hi def link Tday cyanu
+syn match Tmorn /@1morn\>/ containedin=ALL
+hi def link Tmorn orangeu
+syn match Twork /@2work\>/ containedin=ALL
+hi def link Twork blueu
+syn match Teve /@3eve\>/ containedin=ALL
+hi def link Teve yellowu
+syn match Tpaint /@4paint\>/ containedin=ALL
+hi def link Tpaint violetu
+syn match Tbed /@5bed\>/ containedin=ALL
+hi def link Tbed magentau
+syn match Ttomorrow /@6tomorrow\>/ containedin=ALL
+hi def link Ttomorrow greenu
 
 syn match Ttitle /\(^# \)\@<=.*[+@].*/ containedin=ALL
 hi def link Ttitle base1u
 
+syn match Ttcontext /.*\(@[0-5]\)\@=/
+hi def link Ttcontext base2
+
+syn match Tx /^x .*/
+hi def link Tx green
+syn match Tl /^l .*/
+hi def link Tl red
+syn match Tn /^n .*/
+hi def link Tn base01
+
 syn match Thidden /^#.*/
 hi def link Thidden base01
 
-syn match Ttag               /\<[#@]\S\+\>/ containedin=ALL
-syn match Ttag               /+\S*\>/ containedin=ALL
+syn match Ttag /\<[#]\S\+\>/ containedin=ALL
+syn match Ttag /+\S*\>/ containedin=ALL
 hi def link Ttag base01u
 
 syn match Tcomment /^$ .*/
-hi def link Tcomment base01
+hi def link Tcomment blue

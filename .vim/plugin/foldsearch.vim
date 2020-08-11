@@ -1,5 +1,5 @@
 " Vim global plugin -- create folds based on last search pattern
-" Init Folklore: {{{1
+" Init Folklore: {{{
 if exists("loaded_searchfold")
     finish
 endif
@@ -10,7 +10,8 @@ if v:version<700
     finish
 endif
 
-" Customization: {{{1
+" }}}
+" Customization: {{{
 if !exists("g:searchfold_maxdepth")
     let g:searchfold_maxdepth = 7
 endif
@@ -27,7 +28,8 @@ if !exists("g:searchfold_do_maps")
     let g:searchfold_do_maps = 1
 endif
 
-" s:variables {{{1
+" }}}
+" s:variables {{{
 let s:foldtext = "(v:folddashes.'').((v:foldend)-(v:foldstart)+(1))"
 " use unique notation of 'foldtext' to identify active searchfold in a
 " window
@@ -35,7 +37,8 @@ function! SearchFoldText()
 	return repeat("-", 79) . repeat(" ", winwidth(0))
 endfunction
 
-func! s:FoldNested(from, to) " {{{1
+" }}}
+func! s:FoldNested(from, to) " {{{
     " create one fold from line a:from to line a:to, with more nested folds
     " return 1 if folds were created
     " return 0 if from > to
@@ -48,6 +51,7 @@ func! s:FoldNested(from, to) " {{{1
 	return 1
     endif
 
+    
     " calc folds, start with most outer fold
     " - range of inner folds at least 2 lines (from<to)
     " - limit nesting (depth)
@@ -83,17 +87,16 @@ func! s:FoldNested(from, to) " {{{1
     return 1
 endfunc
 
-func! s:CreateFolds(inverse) " {{{1
+" }}}
+func! s:CreateFolds(inverse) " {{{
     " create search folds for the whole buffer based on last search pattern
     let sav_cur = getpos(".")
-
     let matches = []	" list of lnums
     if !a:inverse
 	global//call add(matches, line("."))
     else
 	vglobal//call add(matches, line("."))
     endif
-
     let nmatches = len(matches)
     if nmatches > 0
 	call s:FoldNested(1, matches[0]-1)
@@ -108,13 +111,15 @@ func! s:CreateFolds(inverse) " {{{1
 	call s:FoldNested(matches[imax]+1, line("$"))
     endif
 
+    
     let &l:foldlevel = g:searchfold_foldlevel
     call cursor(sav_cur[1:])
 
     return nmatches
 endfunc
 
-func! <sid>SearchFoldEnable(inverse) "{{{1
+" }}}
+func! <sid>SearchFoldEnable(inverse) "{{{
     " return number of matches
     if !search("", "n")
 	" last search pattern not found, do nothing
@@ -143,7 +148,9 @@ func! <sid>SearchFoldEnable(inverse) "{{{1
     endif
     return s:CreateFolds(a:inverse)
 endfunc
-func! SearchFoldRestore() "{{{1
+
+" }}}
+func! SearchFoldRestore() "{{{
     let g:SearchFoldBool = 0
     if exists("w:searchfold") && w:searchfold.bufnr == bufnr("")
 	" restore settings; var has the right settings if exists, but
@@ -193,24 +200,8 @@ func! SearchFoldRestore() "{{{1
     endif
 endfunc
 
-"" func! F() range "{{{1
-"     " commented out 2010 Jun 01
-"     " range arg: ignore range given by accident
-"     let pat = input("Which regexp? ", @/)
-"     if pat == ""
-" 	if exists("w:searchfold")
-" 	    call SearchFoldRestore()
-" 	endif
-" 	return
-"     endif
-"     let @/ = pat
-"     call histadd("search", @/)
-"     call SearchFold()
-" endfunc
-
-" :call F()	only for backwards compatibility
-
-func! SearchFold(...) "{{{1
+" }}}
+func! SearchFold(...) "{{{
     let inverse = a:0>=1 && a:1
     if v:count >= 1
 	let g:searchfold_foldlevel = v:count - 1
@@ -236,7 +227,8 @@ func! SearchFold(...) "{{{1
     " redraw
 endfunc
 
-" Mappings: {{{1
+" }}}
+" Mappings: {{{
 nn <silent> <Plug>SearchFoldNormal   :<C-U>call SearchFold(0)<CR>gg
 nn <silent> <Plug>SearchFoldInverse  :<C-U>call SearchFold(1)<CR>
 nn <silent> <Plug>SearchFoldRestore  :<C-U>call SearchFoldRestore()<CR>
@@ -257,4 +249,4 @@ function! SearchFoldToggle()
 endfunction
 nnoremap Z :call SearchFoldToggle()<CR>
 
-" vim:set fdm=marker ts=8 sts=4 sw=4 noet:
+" }}}
