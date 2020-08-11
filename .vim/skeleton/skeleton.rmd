@@ -1,0 +1,13 @@
+---
+title: Title
+author: Gregory Leeman
+output: html_notebook
+---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(
+  echo=TRUE,
+  warning=FALSE,
+  message=FALSE
+);
+```

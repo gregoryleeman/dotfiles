@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =8
+let g:netrw_dirhist_8='/Users/gl6/Dropbox'
+let g:netrw_dirhist_7='/Users/gl6/.dotfiles/vim/plugin'
+let g:netrw_dirhist_6='/Users/gl6/.ssh'
+let g:netrw_dirhist_5='/Users/gl6'
+let g:netrw_dirhist_4='/Users/gl6/.ssh'
+let g:netrw_dirhist_3='/Users/gl6/.dotfiles/vim/plugin'
+let g:netrw_dirhist_2='/Users/gl6/.dotfiles/vim/ftplugin'
+let g:netrw_dirhist_1='/Users/gl6/Dropbox'
+let g:netrw_dirhist_0='/Users/gl6'
+let g:netrw_dirhist_9='/Users/gl6/Projects'
