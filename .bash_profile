@@ -5,7 +5,8 @@ source ~/.bash_xtra.sh
 export PS1='[\u@\h]\$ '
 set -o vi
 
-if [[ $U_NAME == "Darwin" ]]; then
+if [[ $(uname) == "Darwin" ]]; then
+	export BASH_SILENCE_DEPRECATION_WARNING=1
 	eval $(gdircolors ~/.dircolors/dircolors.ansi-dark)
 	export HOMEBREW_CASK_OPTS="--appdir=~/Applications --caskroom=~/Caskroom"
 	export PATH=$PATH:"$HOME/homebrew/bin"
