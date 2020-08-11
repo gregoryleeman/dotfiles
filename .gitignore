@@ -6,10 +6,9 @@
 !.config/*
 !.vim/
 !.vim/*
+.vim/plugin/env.vim
 .vim/plugged/
 .vim/plugged/*
-
-.vim/plugin/env.vim
 
 !.bin/
 !.bin/*
