@@ -8,6 +8,9 @@
 !.vim/*
 .vim/plugged/
 .vim/plugged/*
+
+.vim/plugin/env.vim
+
 !.bin/
 !.bin/*
 !.dircolors/
