@@ -7,9 +7,9 @@ set -o vi
 
 if [[ $(uname) == "Darwin" ]]; then
 	export BASH_SILENCE_DEPRECATION_WARNING=1
+	export PATH=$PATH:"$HOME/homebrew/bin"
 	eval $(gdircolors ~/.dircolors/dircolors.ansi-dark)
 	export HOMEBREW_CASK_OPTS="--appdir=~/Applications --caskroom=~/Caskroom"
-	export PATH=$PATH:"$HOME/homebrew/bin"
 	alias ls='gls --color=auto'
 else
 	alias ls='ls --color=auto'
