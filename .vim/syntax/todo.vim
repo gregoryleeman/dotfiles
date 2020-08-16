@@ -17,15 +17,15 @@ hi def link Tc yellow
 syn match Ttc /\(^(C)\)\@<=.*/
 hi def link Ttc base1
 
+syn match Te /^(E)/ containedin=ALL
+hi def link Te yellow
+syn match Tte /\(^(E)\)\@<=.*/
+hi def link Tte base1
+
 syn match Tr /^(R)/ containedin=ALL
 hi def link Tr cyan
 syn match Ttr /\(^(R)\)\@<=.*/
 hi def link Ttr base1
-
-syn match Te /^(E)/ containedin=ALL
-hi def link Te cyan
-syn match Tte /\(^(E)\)\@<=.*/
-hi def link Tte base1
 
 syn match Th /^(H)/ containedin=ALL
 hi def link Th orange
@@ -48,20 +48,18 @@ syn match Ttm /\(^(M)\)\@<=.*/
 hi def link Ttm base01
 
 
-syn match Tday /@0day\>/ containedin=ALL
+syn match Tday /@0\S*\>/ containedin=ALL
 hi def link Tday cyanu
-syn match Tmorn /@1morn\>/ containedin=ALL
+syn match Tmorn /@1\S*\>/ containedin=ALL
 hi def link Tmorn orangeu
-syn match Twork /@2work\>/ containedin=ALL
+syn match Twork /@2\S*\>/ containedin=ALL
 hi def link Twork blueu
-syn match Teve /@3eve\>/ containedin=ALL
+syn match Teve /@3\S*\>/ containedin=ALL
 hi def link Teve yellowu
-syn match Tpaint /@4paint\>/ containedin=ALL
+syn match Tpaint /@4\S*\>/ containedin=ALL
 hi def link Tpaint violetu
-syn match Tbed /@5bed\>/ containedin=ALL
+syn match Tbed /@5\S*\>/ containedin=ALL
 hi def link Tbed magentau
-syn match Ttomorrow /@6tomorrow\>/ containedin=ALL
-hi def link Ttomorrow greenu
 
 syn match Ttitle /\(^# \)\@<=.*[+@].*/ containedin=ALL
 hi def link Ttitle base1u

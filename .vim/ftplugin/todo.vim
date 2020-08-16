@@ -172,27 +172,73 @@ map <buffer> <leader>4 :Tag 4paint<CR>
 map <buffer> <leader>5 :Tag 5bed<CR>
 map <buffer> <leader>6 :Tag 6tomorrow<CR>
 
-nmap <buffer> sp :Sort +\S*<CR>:call FoldAll()<CR>
-nmap <buffer> s1 sp:/+1<CR>zO<Esc>
-nmap <buffer> s2 sp:/+2<CR>zO<Esc>
-nmap <buffer> s3 sp:/+3<CR>zO<Esc>
-nmap <buffer> s4 sp:/+4<CR>zO<Esc>
-nmap <buffer> s5 sp:/+5<CR>zO<Esc>
-nmap <buffer> s6 sp:/+6<CR>zO<Esc>
-nmap <buffer> s7 sp:/+7<CR>zO<Esc>
-nmap <buffer> s8 sp:/+8<CR>zO<Esc>
+nmap <buffer> sl :Sort +\S*<CR>:call FoldAll()<CR>
+nmap <buffer> sp slvGzo
+" nmap <buffer> s1 sl:/+1<CR>zO<Esc>
+" nmap <buffer> s2 sl:/+2<CR>zO<Esc>
+" nmap <buffer> s3 sl:/+3<CR>zO<Esc>
+" nmap <buffer> s4 sl:/+4<CR>zO<Esc>
+" nmap <buffer> s5 sl:/+5<CR>zO<Esc>
+" nmap <buffer> s6 sl:/+6<CR>zO<Esc>
+" nmap <buffer> s7 sl:/+7<CR>zO<Esc>
+" nmap <buffer> s8 sl:/+8<CR>zO<Esc>
+" nmap <buffer> sd s1
+" nmap <buffer> sw s2
+" nmap <buffer> sa s3
+" nmap <buffer> se s4
+" nmap <buffer> sq s5
+" nmap <buffer> ss s6
+" nmap <buffer> sc s7
+" nmap <buffer> sf s8
+
+nmap <buffer> s1 :Sort +1\S*<CR>
+nmap <buffer> sd s1
+nmap <buffer> s! :Sort ([A-Z])\(.*+1\S*\)\@=<CR>
+nmap <buffer> sD s!
+
+nmap <buffer> s2 :Sort +2\S*<CR>zO<Esc>
+nmap <buffer> sw s2
+nmap <buffer> s@ :Sort ([A-Z])\(.*+2\S*\)\@=<CR>zO<Esc>
+nmap <buffer> sW s@
+
+nmap <buffer> s3 :Sort +3\S*<CR>zO<Esc>
+nmap <buffer> sa s3
+nmap <buffer> s£ :Sort ([A-Z])\(.*+3\S*\)\@=<CR>zO<Esc>
+nmap <buffer> sA s£
+
+nmap <buffer> s4 :Sort +4\S*<CR>zO<Esc>
+nmap <buffer> se s4
+nmap <buffer> s$ :Sort ([A-Z])\(.*+4\S*\)\@=<CR>zO<Esc>
+nmap <buffer> sE s$
+
+nmap <buffer> s5 :Sort +5\S*<CR>zO<Esc>
+nmap <buffer> sq s5
+nmap <buffer> s% :Sort ([A-Z])\(.*+5\S*\)\@=<CR>zO<Esc>
+nmap <buffer> sQ s%
+
+nmap <buffer> s6 :Sort +6\S*<CR>zO<Esc>
+nmap <buffer> ss s6
+nmap <buffer> s^ :Sort ([A-Z])\(.*+6\S*\)\@=<CR>zO<Esc>
+nmap <buffer> sS s^
+
+nmap <buffer> s7 :Sort +7\S*<CR>zO<Esc>
+nmap <buffer> sc s7
+nmap <buffer> s& :Sort ([A-Z])\(.*+7\S*\)\@=<CR>zO<Esc>
+nmap <buffer> sC s&
+
+nmap <buffer> s8 :Sort +8\S*<CR>zO<Esc>
+nmap <buffer> sf s8
+nmap <buffer> s* :Sort ([A-Z])\(.*+8\S*\)\@=<CR>zO<Esc>
+nmap <buffer> sF s*
+
+
+nmap <buffer> sh :Sort \((H).*\\|^# \)\@<=@\S*<CR>
+nmap <buffer> sn :Sort \(([^H]).*\\|^# \)\@<=@\S*<CR>
+nmap <buffer> sm :Sort @\S*<CR>
 
 nmap <buffer> si :Sort ^.*(\S)<CR>
-nmap <buffer> sn :Sort @\S*<CR>
 
-nmap <buffer> sd s1
-nmap <buffer> sw s2
-nmap <buffer> sa s3
-nmap <buffer> se s4
-nmap <buffer> sq s5
-nmap <buffer> ss s6
-nmap <buffer> sc s7
-nmap <buffer> sf s8
+nmap <buffer> s? :Sort ^.*(\S)[^@]*$<CR>
 
 nmap <buffer> o :NewLine o<CR>
 nmap <buffer> O :NewLine O<CR>
