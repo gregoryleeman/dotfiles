@@ -1,49 +1,69 @@
 let b:current_syntax = "workflowy"
 
-syn match Ta /@a\>/ containedin=Ttag
-hi def link Ta redu
-" syn match Tta /.*@a\>/
-" hi def link Tta red
+syn match Ta /\(^\s*\)\@<=a / containedin=ALL
+hi def link Ta red
+syn match Tta /\(^\s*a \)\@<=.*/
+hi def link Tta base1
 
-syn match Tb /@b\>/ containedin=ALL
-hi def link Tb blueu
-" syn match Ttb /.*@b\>/
-" hi def link Ttb blue
+syn match Tb /\(^\s*\)\@<=b / containedin=ALL
+hi def link Tb blue
+syn match Ttb /\(^\s*b \)\@<=.*/
+hi def link Ttb base1
 
-syn match Tc /@c\>/ containedin=ALL
-hi def link Tc yellowu
-" syn match Ttc /.*@c\>/
-" hi def link Ttc yellow
+syn match Tc /\(^\s*\)\@<=c / containedin=ALL
+hi def link Tc yellow
+syn match Ttc /\(^\s*c \)\@<=.*/
+hi def link Ttc base1
 
-syn match Tw /@waiting\>/ containedin=Ttag
-hi def link Tw magentau
-" syn match Ttw /.*@waiting\>/
-" hi def link Ttw base01
+syn match Tp /\(^\s*\)\@<=p / containedin=ALL
+hi def link Tp base3
+syn match Ttp /\(^\s*p \)\@<=.*/
+hi def link Ttp base1u
 
-syn match Tm /@maybe\>/ containedin=Ttag
-hi def link Tm violetu
-" syn match Ttm /.*@maybe\>/
-" hi def link Ttm base01
+syn match Th /\(^\s*\)\@<=h / containedin=ALL
+hi def link Th orange
+syn match Tth /\(^\s*h \)\@<=.*/
+hi def link Tth base1
 
-" syn match Tt /@today\>/ containedin=ALL
-" hi def link Tt base2u
-" syn match Ttt /.*@today\>/
-" hi def link Ttt base1
+syn match Te /\(^\s*\)\@<=e / containedin=ALL
+hi def link Te orange
+syn match Tte /\(^\s*e \)\@<=.*/
+hi def link Tte base1
 
-syn match Tx /\(^\s*\)\@<=x /
+syn match Tw /\(^\s*\)\@<=w / containedin=ALL
+hi def link Tw magenta
+syn match Ttw /\(^\s*w \)\@<=.*/
+hi def link Ttw base1
+
+syn match Tm /\(^\s*\)\@<=m / containedin=ALL
+hi def link Tm violet
+syn match Ttm /\(^\s*m \)\@<=.*/
+hi def link Ttm base1
+
+syn match Tn /@n/ containedin=ALL
+hi def link Tn blue
+syn match Ttn /.*\(@n\)\@=/
+hi def link Ttn base2
+
+syn match Tv /@v/ containedin=ALL
+hi def link Tv violet
+syn match Ttv /.*\(@v\)\@=/
+hi def link Ttv base1
+
+syn match Tt /@t/ containedin=ALL
+hi def link Tt cyan
+syn match Ttt /.*\(@t\)\@=/
+hi def link Ttt base01
+
+syn match Tx /\(^\s*\)\@<=x/ containedin=ALL
 hi def link Tx green
-syn match Ttx /\(^\s*x \)\@<=.*/
+syn match Ttx /\(^\s*x\)\@<=.*$/ containedin=ALL
 hi def link Ttx green
 
-syn match Tl /\(^\s*\)\@<=l /
+syn match Tl /\(^\s*\)\@<=l/ containedin=ALL
 hi def link Tl red
-syn match Ttl /\(^\s*l \)\@<=.*/
-hi def link Ttl base01
-
-syn match Tn /\(^\s*\)\@<=n /
-hi def link Tn base01
-syn match Ttn /\(^\s*n \)\@<=.*/
-hi def link Ttn base01
+syn match Ttl /\(^\s*l\)\@<=.*$/ containedin=ALL
+hi def link Ttl red
 
 syn match Ttag  /\<[#@]\S\+\>/ containedin=ALL
 syn match Ttag  /+\S*\>/ containedin=ALL
