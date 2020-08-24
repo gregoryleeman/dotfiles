@@ -23,6 +23,13 @@ fu! Search(search) " {{{
 endfu " }}}
 command! -nargs=1 Search :call Search(<f-args>) 
 map <buffer> sn :Search @n<CR>
+map <buffer> sd :Search @nd<CR>
+map <buffer> sm :Search @nm<CR>
+map <buffer> sw :Search @nw<CR>
+map <buffer> se :Search @ne<CR>
+map <buffer> sp :Search @np<CR>
+map <buffer> sb :Search @nb<CR>
+map <buffer> st :Search @t<CR>
 map <buffer> sh :Search ^\s*h<CR>
 
 fu! Tag(line1, line2, tag) " {{{

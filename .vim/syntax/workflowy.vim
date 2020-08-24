@@ -40,18 +40,18 @@ hi def link Tm violet
 syn match Ttm /\(^\s*m \)\@<=.*/
 hi def link Ttm base1
 
-syn match Tn /@n/ containedin=ALL
-hi def link Tn blue
+syn match Tn /@n\S*/ containedin=ALL
+hi def link Tn blueu
 syn match Ttn /.*\(@n\)\@=/
 hi def link Ttn base2
 
-syn match Tv /@v/ containedin=ALL
-hi def link Tv violet
+syn match Tv /@v\S*/ containedin=ALL
+hi def link Tv violetu
 syn match Ttv /.*\(@v\)\@=/
 hi def link Ttv base1
 
-syn match Tt /@t/ containedin=ALL
-hi def link Tt cyan
+syn match Tt /@t\S*/ containedin=ALL
+hi def link Tt cyanu
 syn match Ttt /.*\(@t\)\@=/
 hi def link Ttt base01
 
@@ -70,17 +70,17 @@ syn match Ttag  /+\S*\>/ containedin=ALL
 syn match Ttag  /\S\+:\S\+/ containedin=ALL
 hi def link Ttag base01u
 
-" syn match Tunderline /\(^\s*\* \)\@<=[^#@\t]*\S\(\s*\([:#@\t]\|$\)\)\@=/
-" syn match Tunderline /\(^\s*\* \)\@<=.*$/
-" hi def link Tunderline base1u
+syn match Tunderline /\(^\s*\* \)\@<=[^#@\t]*\S\(\s*\([:#@\t]\|$\)\)\@=/
+syn match Tunderline /\(^\s*\* \)\@<=.*$/
+hi def link Tunderline base1u
 
 syn match Tbold /\(^\s*\)\@<=[0-9]\+\./
 syn match Tbold /\(^\s*\)\@<=\(-\|\*\)/
 hi def link Tbold base2
 
-syn match Tcomment /\(^\s*\)\@<=$ .*/
+syn match Tcomment /\(^\s*\)\@<=$\s.*/
 syn match Tcomment /\(^\s*\)\@<=\~.*/
-syn match Tcomment /\(^\s*\)\@<=> .*/
+syn match Tcomment /\(^\s*\)\@<=>\s.*/
 hi def link Tcomment blue
 
 syn match Thidden /\(^\s*\)\@<=# .*/

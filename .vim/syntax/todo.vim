@@ -47,7 +47,6 @@ hi def link Tm violet
 syn match Ttm /\(^(M)\)\@<=.*/
 hi def link Ttm base01
 
-
 syn match Tday /@0\S*\>/ containedin=ALL
 hi def link Tday cyanu
 syn match Tmorn /@1\S*\>/ containedin=ALL
