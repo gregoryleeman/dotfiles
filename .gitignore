@@ -16,7 +16,6 @@
 !.dircolors/*
 
 !.tmux.conf
-!.bash_profile
 !.bashrc
 !.vimrc
 !.Rprofile
