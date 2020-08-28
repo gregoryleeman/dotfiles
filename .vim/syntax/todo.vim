@@ -2,7 +2,6 @@ let b:current_syntax = "todo"
 
 exe "hi! Folded cterm=NONE ctermfg=".g:base2." ctermbg=NONE"
 
-
 syn match Ta /(A)/ containedin=ALLBUT,tx,tl
 hi def link Ta red
 syn match Tb /(B)/ containedin=ALLBUT,tx,tl
@@ -47,7 +46,6 @@ syn match Tx /^x .*/ containedin=ALL
 hi def link Tx green
 syn match Tl /^l .*/ containedin=ALL
 hi def link Tl red
-
 
 syn match Tr /#r\S*\>/ containedin=ALL
 hi def link Tr cyanu
