@@ -87,8 +87,9 @@ fu! NewLine(line1, ex) " {{{
 	endif
 	let line = getline(line1)
 	let project = matchstr(line, "+\\S\\+")
-	let context = matchstr(line, "@\\S\\+")
-	execute "normal! i " . project . " " . context . "\<Esc>:s/  / /e\<CR>:s/ $//e\<CR>0"
+	" let context = matchstr(line, "@\\S\\+")
+	" execute "normal! i " . project . " " . context . "\<Esc>:s/  / /e\<CR>:s/ $//e\<CR>0"
+	execute "normal! i " . project . "\<Esc>:s/  / /e\<CR>:s/ $//e\<CR>0"
 	startinsert
 endfu 
 
@@ -128,6 +129,11 @@ fu! Update() " {{{
 endfu 
 
 " }}}
+fu! Clear() " {{{
+	:%s/\(([A-Z]).*\)\@<=\s*@\S*//g
+endfu 
+
+" }}}
 
 command! -nargs=1 Sort :call Sort(<f-args>)
 command! -nargs=1 Fold :call Fold(<f-args>)
@@ -137,14 +143,16 @@ command! -nargs=1 -range Priority :call Priority(<line1>, <line2>, <f-args>)
 command! -nargs=1 -range Done :call Done(<line1>,<line2>,<f-args>)
 command! -nargs=* -range Tag :call Tag(<line1>, <line2>, <f-args>) 
 command! Update :call Update() 
+command! Clear :call Clear() 
 
 " mappings {{{ 
 map <buffer> <leader>a :Priority A<CR>
 map <buffer> <leader>b :Priority B<CR>
 map <buffer> <leader>c :Priority C<CR>
+map <buffer> <leader>d :Priority D<CR>
+map <buffer> <leader>e :Priority E<CR>
 map <buffer> <leader>h :Priority H<CR>
 map <buffer> <leader>m :Priority M<CR>
-map <buffer> <leader>s :Priority S<CR>
 map <buffer> <leader>w :Priority W<CR>
 
 map <buffer> <leader>0 :Tag @ 0<CR>
@@ -168,15 +176,17 @@ map <buffer> <leader>l :Done l<CR>
 
 nmap <buffer> sp :Sort +\S*<CR>:Fold +\S*<CR>
 nmap <buffer> sn :Sort @\S*<CR>
+nmap <buffer> sN :Sort (\S)\(.*@\)\@=<CR>
 nmap <buffer> si :Sort (\S)<CR>
 
 nmap <buffer> sa :Sort (A)<CR>
 nmap <buffer> sb :Sort (B)<CR>
 nmap <buffer> sc :Sort (C)<CR>
+nmap <buffer> sd :Sort (D)<CR>
+nmap <buffer> se :Sort (E)<CR>
+nmap <buffer> sh :Sort (H)<CR>
 nmap <buffer> sm :Sort (M)<CR>
 nmap <buffer> sw :Sort (W)<CR>
-nmap <buffer> sh :Sort (H)<CR>
-nmap <buffer> sd :Sort (D)<CR>
 
 nmap <buffer> sr :Sort #r<CR>
 

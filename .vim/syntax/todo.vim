@@ -50,7 +50,7 @@ hi def link Tl red
 syn match Tr /#r\S*\>/ containedin=ALL
 hi def link Tr cyanu
 
-syn match Ttoday /.*\(@[0-9]\)\@=/
+syn match Ttoday /.*\(@\)\@=/
 hi def link Ttoday base2
 
 syn match Thidden /^#.*/
