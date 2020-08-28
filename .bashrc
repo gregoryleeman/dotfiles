@@ -1,7 +1,7 @@
 #/bin/bash
 
 source ~/.bash_xtra
-export PS1="\e[0;34m[\u@\h \W]\$ \e[m"
+export PS1="\e[0;37m[\u@\h \W]\$ \e[m"
 set -o vi
 
 if [[ $(uname) == "Darwin" ]]; then
