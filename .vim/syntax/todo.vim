@@ -19,29 +19,6 @@ hi def link Th yellow
 syn match Td /(D)/ containedin=ALLBUT,tx,tl
 hi def link Td cyan
 
-" syn match T0 /[@+]0\S*\>/ containedin=ALL
-" hi def link T0 cyanu
-" syn match T1 /[@+]1\S*\>/ containedin=ALL
-" hi def link T1 orangeu
-" syn match T2 /[@+]2\S*\>/ containedin=ALL
-" hi def link T2 blueu
-" syn match T3 /[@+]3\S*\>/ containedin=ALL
-" hi def link T3 yellowu
-" syn match T4 /[@+]4\S*\>/ containedin=ALL
-" hi def link T4 violetu
-" syn match T5 /[@+]5\S*\>/ containedin=ALL
-" hi def link T5 magentau
-" syn match T6 /[@+]6\S*\>/ containedin=ALL
-" hi def link T6 greenu
-" syn match T7 /[@+]7\S*\>/ containedin=ALL
-" hi def link T7 redu
-" syn match T8 /[@+]8\S*\>/ containedin=ALL
-" hi def link T8 cyanu
-" syn match T9 /[@+]9\S*\>/ containedin=ALL
-" hi def link T9 violetu
-" syn match Tt /@t\S*\>/ containedin=ALL
-" hi def link Tt blueu
-
 syn match Tx /^x .*/ containedin=ALL
 hi def link Tx green
 syn match Tl /^l .*/ containedin=ALL
@@ -50,8 +27,10 @@ hi def link Tl red
 syn match Tr /#r\S*\>/ containedin=ALL
 hi def link Tr cyanu
 
-syn match Ttoday /.*\(@\)\@=/
+syn match Ttoday /.*\(@n\)\@=/
 hi def link Ttoday base2
+syn match Ttomorrow /.*\(@t\)\@=/
+hi def link Ttomorrow base1
 
 syn match Thidden /^#.*/
 hi def link Thidden base01

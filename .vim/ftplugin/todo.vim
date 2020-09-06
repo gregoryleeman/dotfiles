@@ -125,7 +125,8 @@ endfu
 " }}}
 fu! Update() " {{{
 	:%s/^[nxl] \(.*#r\)\@=//g
-	:%s/\(^[nxl] .*\)\@<= @\S*//g
+	:%s/\(^[nxl] .*\)\@<= @n\S*//g
+	:%s/\(([A-Z]).*\)\@<=@t/@n/g
 endfu 
 
 " }}}
@@ -155,19 +156,29 @@ map <buffer> <leader>h :Priority H<CR>
 map <buffer> <leader>m :Priority M<CR>
 map <buffer> <leader>w :Priority W<CR>
 
-map <buffer> <leader>0 :Tag @ 0<CR>
-map <buffer> <leader>1 :Tag @ 1<CR>
-map <buffer> <leader>2 :Tag @ 2<CR>
-map <buffer> <leader>3 :Tag @ 3<CR>
-map <buffer> <leader>4 :Tag @ 4<CR>
-map <buffer> <leader>5 :Tag @ 5<CR>
-map <buffer> <leader>6 :Tag @ 6<CR>
-map <buffer> <leader>7 :Tag @ 7<CR>
-map <buffer> <leader>8 :Tag @ 8<CR>
-map <buffer> <leader>9 :Tag @ 9<CR>
-
-map <buffer> <leader>t :Tag @ t<CR>
 map <buffer> <leader>n :Tag @ n<CR>
+map <buffer> <leader>0 :Tag @ n0<CR>
+map <buffer> <leader>1 :Tag @ n1<CR>
+map <buffer> <leader>2 :Tag @ n2<CR>
+map <buffer> <leader>3 :Tag @ n3<CR>
+map <buffer> <leader>4 :Tag @ n4<CR>
+map <buffer> <leader>5 :Tag @ n5<CR>
+map <buffer> <leader>6 :Tag @ n6<CR>
+map <buffer> <leader>7 :Tag @ n7<CR>
+map <buffer> <leader>8 :Tag @ n8<CR>
+map <buffer> <leader>9 :Tag @ n9<CR>
+
+nmap <buffer> <leader>t :Tag @ t<CR>
+nmap <buffer> <leader>) :Tag @ t0<CR>
+nmap <buffer> <leader>! :Tag @ t1<CR>
+nmap <buffer> <leader>@ :Tag @ t2<CR>
+nmap <buffer> <leader>£ :Tag @ t3<CR>
+nmap <buffer> <leader>$ :Tag @ t4<CR>
+nmap <buffer> <leader>% :Tag @ t5<CR>
+nmap <buffer> <leader>^ :Tag @ t6<CR>
+nmap <buffer> <leader>& :Tag @ t7<CR>
+nmap <buffer> <leader>* :Tag @ t8<CR>
+nmap <buffer> <leader>( :Tag @ t9<CR>
 
 map <buffer> <leader>r :Tag # r<CR>
 
