@@ -31,6 +31,9 @@ syn match Ttoday /.*\(@n\)\@=/
 hi def link Ttoday base2
 syn match Ttomorrow /.*\(@t\)\@=/
 hi def link Ttomorrow base1
+syn match Tholiday /.*\(@s\)\@=/
+hi def link Tholiday yellow
+
 
 syn match Thidden /^#.*/
 hi def link Thidden base01

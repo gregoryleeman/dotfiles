@@ -157,6 +157,7 @@ map <buffer> <leader>m :Priority M<CR>
 map <buffer> <leader>w :Priority W<CR>
 
 map <buffer> <leader>n :Tag @ n<CR>
+map <buffer> <leader>s :Tag @ s<CR>
 map <buffer> <leader>0 :Tag @ n0<CR>
 map <buffer> <leader>1 :Tag @ n1<CR>
 map <buffer> <leader>2 :Tag @ n2<CR>

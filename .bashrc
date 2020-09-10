@@ -28,6 +28,8 @@ alias la='ls -al'
 alias l1='ls -1'
 alias lt='ls -ltr'
 
+alias rm='rm -i'
+
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 set show-all-if-ambiguous on
