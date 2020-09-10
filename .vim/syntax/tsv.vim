@@ -39,4 +39,14 @@ hi def link Tcolumn5title cyanu
 hi def link Tcolumn6 orange
 hi def link Tcolumn6title orangeu
 
+
+syn match Trunning /RUNNING/ containedin=ALL
+hi def link Trunning bluebg
+
+syn match Tdone /DONE/ containedin=ALL
+hi def link Tdone greenbg
+
+syn match Terror /ERROR/ containedin=ALL
+hi def link Terror orangebg
+
 setl nowrap
