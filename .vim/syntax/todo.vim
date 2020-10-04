@@ -2,6 +2,10 @@ let b:current_syntax = "todo"
 
 exe "hi! Folded cterm=NONE ctermfg=".g:base2." ctermbg=NONE"
 
+syn match Tcomment /^\$ .*/
+syn match Tcomment /^\> .*/
+hi def link Tcomment blue
+
 syn match Ta /(A)/ containedin=ALLBUT,tx,tl
 hi def link Ta red
 syn match Tb /(B)/ containedin=ALLBUT,tx,tl
@@ -30,16 +34,10 @@ hi def link Tr cyanu
 syn match Ttoday /.*\(@n\)\@=/
 hi def link Ttoday base2
 syn match Ttomorrow /.*\(@t\)\@=/
-hi def link Ttomorrow base1
-syn match Tholiday /.*\(@s\)\@=/
-hi def link Tholiday yellow
-
+hi def link Ttomorrow cyan
 
 syn match Thidden /^#.*/
 hi def link Thidden base01
 
 syn match Ttag /\<[+@#]\S\+\>/ containedin=ALL
 hi def link Ttag base01u
-
-syn match Tcomment /^\$/
-hi def link Tcomment blue

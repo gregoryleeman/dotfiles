@@ -12,16 +12,11 @@ fu! SearchFoldText() " {{{
 	if getline(v:foldstart) =~ "^§$"
 		return repeat("-", 79) . repeat(" ", winwidth(0))
 	else
-		if getline(v:foldstart) =~ ".*+\S*.*"
-			let linematch = matchstr(getline(v:foldstart), "+\\S*\\>")
-			return "# " . linematch . " +" . repeat(" ", winwidth(0))
-		endif 
-		return trim(getline(v:foldstart))[0:-1] . " +" . repeat(" ", winwidth(0))
+		return repeat(" ", indent(v:foldstart)) . trim(getline(v:foldstart))[0:-1] . " +" . repeat(" ", winwidth(0))
 	endif
 endfu
 
 " }}}
-
 fu! Fold(search) " {{{
 	let foldstart = 0
 	let foldend = 0
@@ -76,8 +71,7 @@ fu! Sort(search) " {{{
 		execute "normal /".search."\<CR>ggn0"
 	else
 		execute "normal!
-			\:sort /^# vim/r\<CR>
-			\/^\\(\\(.*[@+§].*\\|.*([A-Z])\\)\\@!.\\)*$\<CR>"
+					\/^\\(\\(.*[@+§].*\\|.*([A-Z])\\)\\@!.\\)*$\<CR>"
 		:call SearchFold()
 	endif
 endfu
@@ -208,22 +202,15 @@ nmap <buffer> sw :Sort (W)<CR>
 
 nmap <buffer> sr :Sort #r<CR>
 
-map <buffer> s1 :Sort +admin<CR>
-map <buffer> s2 :Sort +work<CR>
-map <buffer> s3 :Sort +art<CR>
-map <buffer> s4 :Sort +body<CR>
-map <buffer> s5 :Sort +mind<CR>
-map <buffer> s6 :Sort +soul<CR>
-map <buffer> s7 :Sort +family<CR>
-map <buffer> s8 :Sort +social<CR>
-map <buffer> s! :Sort +admin.*<CR>:Fold +\S*<CR>
-map <buffer> s@ :Sort +work.*<CR>:Fold +\S*<CR>
-map <buffer> s£ :Sort +art.*<CR>:Fold +\S*<CR>
-map <buffer> s$ :Sort +body.*<CR>:Fold +\S*<CR>
-map <buffer> s% :Sort +mind.*<CR>:Fold +\S*<CR>
-map <buffer> s^ :Sort +soul.*<CR>:Fold +\S*<CR>
-map <buffer> s& :Sort +family.*<CR>:Fold +\S*<CR>
-map <buffer> s* :Sort +social.*<CR>:Fold +\S*<CR>
+map <buffer> s0 :Sort +0<CR>
+map <buffer> s1 :Sort +1<CR>
+map <buffer> s2 :Sort +2<CR>
+map <buffer> s3 :Sort +3<CR>
+map <buffer> s4 :Sort +4<CR>
+map <buffer> s5 :Sort +5<CR>
+map <buffer> s6 :Sort +6<CR>
+map <buffer> s7 :Sort +7<CR>
+map <buffer> s8 :Sort +8<CR>
 
 nmap <buffer> s? :Sort ^.*(\S)[^@]*$<CR>
 
