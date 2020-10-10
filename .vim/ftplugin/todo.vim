@@ -119,25 +119,24 @@ fu! Done(line1, line2, n) " {{{
 endfu 
 
 " }}}
-fu! Tag(line1, line2, mod, tag) " {{{
+fu! Tag(line1, line2, tag) " {{{
 	:normal! mm
-	execute "normal!:".a:line1.",".a:line2."s/".a:mod.a:tag."/%/e\<CR>"
-	execute "normal!:".a:line1.",".a:line2."s/".a:mod."\\S*/".a:mod.a:tag."/e\<CR>"
-	execute "normal!:".a:line1.",".a:line2."s/\\(^.*[".a:mod."%].*\\)\\@<!\\s*$/ ".a:mod.a:tag."/e\<CR>"
+	execute "normal!:".a:line1.",".a:line2."s/".a:tag."/%/e\<CR>"
+	execute "normal!:".a:line1.",".a:line2."s/\\(^.*%.*\\)\\@<!\\s*$/ ".a:tag."/e\<CR>"
 	execute "normal!:".a:line1.",".a:line2."s/\\s*%//e\<CR>"
 	:normal! `mj
 endfu 
 
 " }}}
 fu! Update() " {{{
-	:%s/^[nxl] \(.*#r\)\@=//g
-	:%s/\(^[nxl] .*\)\@<= @n\S*//g
+	:%s/^[xl] \(.*@r\)\@=//g
+	:%s/\(^[xl] .*\)\@<= @n\S*//g
 	:%s/\(([A-Z]).*\)\@<=@t/@n/g
 endfu 
 
 " }}}
 fu! Clear() " {{{
-	:%s/\(([A-Z]).*\)\@<=\s*@\S*//g
+	:%s/\(([A-Z]).*\)\@<=\s*@[^ r]//g
 endfu 
 
 " }}}
@@ -162,40 +161,19 @@ map <buffer> <leader>h :Priority H<CR>
 map <buffer> <leader>m :Priority M<CR>
 map <buffer> <leader>w :Priority W<CR>
 
-map <buffer> <leader>n :Tag @ n<CR>
-map <buffer> <leader>s :Tag @ s<CR>
-map <buffer> <leader>0 :Tag @ n0<CR>
-map <buffer> <leader>1 :Tag @ n1<CR>
-map <buffer> <leader>2 :Tag @ n2<CR>
-map <buffer> <leader>3 :Tag @ n3<CR>
-map <buffer> <leader>4 :Tag @ n4<CR>
-map <buffer> <leader>5 :Tag @ n5<CR>
-map <buffer> <leader>6 :Tag @ n6<CR>
-map <buffer> <leader>7 :Tag @ n7<CR>
-map <buffer> <leader>8 :Tag @ n8<CR>
-map <buffer> <leader>9 :Tag @ n9<CR>
-
-nmap <buffer> <leader>t :Tag @ t<CR>
-nmap <buffer> <leader>) :Tag @ t0<CR>
-nmap <buffer> <leader>! :Tag @ t1<CR>
-nmap <buffer> <leader>@ :Tag @ t2<CR>
-nmap <buffer> <leader>£ :Tag @ t3<CR>
-nmap <buffer> <leader>$ :Tag @ t4<CR>
-nmap <buffer> <leader>% :Tag @ t5<CR>
-nmap <buffer> <leader>^ :Tag @ t6<CR>
-nmap <buffer> <leader>& :Tag @ t7<CR>
-nmap <buffer> <leader>* :Tag @ t8<CR>
-nmap <buffer> <leader>( :Tag @ t9<CR>
-
-map <buffer> <leader>r :Tag # r<CR>
+map <buffer> <leader>n :Tag @n<CR>
+map <buffer> <leader>t :Tag @t<CR>
+map <buffer> <leader>r :Tag @r<CR>
 
 map <buffer> <leader>x :Done x<CR>
 map <buffer> <leader>l :Done l<CR>
 
-nmap <buffer> sp :Sort +\S*<CR>:Fold +\S*<CR>
-nmap <buffer> sn :Sort @\S*<CR>
-nmap <buffer> sN :Sort (\S)\(.*@\)\@=<CR>
 nmap <buffer> si :Sort (\S)<CR>
+nmap <buffer> sp :Sort +\S*<CR>:Fold +[0-9]<CR>
+
+nmap <buffer> sn :Sort .*@[nr]<CR>
+nmap <buffer> st :Sort .*@[tr]<CR>
+nmap <buffer> sr :Sort .*@r<CR>
 
 nmap <buffer> sa :Sort (A)<CR>
 nmap <buffer> sb :Sort (B)<CR>
@@ -206,24 +184,24 @@ nmap <buffer> sh :Sort (H)<CR>
 nmap <buffer> sm :Sort (M)<CR>
 nmap <buffer> sw :Sort (W)<CR>
 
-nmap <buffer> sr :Sort #r<CR>
-
-map <buffer> s1 :Sort +admin<CR>
-map <buffer> s2 :Sort +work<CR>
-map <buffer> s3 :Sort +art<CR>
-map <buffer> s4 :Sort +body<CR>
-map <buffer> s5 :Sort +mind<CR>
-map <buffer> s6 :Sort +soul<CR>
-map <buffer> s7 :Sort +family<CR>
-map <buffer> s8 :Sort +social<CR>
-map <buffer> s! :Sort +admin.*<CR>:Fold +\S*<CR>
-map <buffer> s@ :Sort +work.*<CR>:Fold +\S*<CR>
-map <buffer> s£ :Sort +art.*<CR>:Fold +\S*<CR>
-map <buffer> s$ :Sort +body.*<CR>:Fold +\S*<CR>
-map <buffer> s% :Sort +mind.*<CR>:Fold +\S*<CR>
-map <buffer> s^ :Sort +soul.*<CR>:Fold +\S*<CR>
-map <buffer> s& :Sort +family.*<CR>:Fold +\S*<CR>
-map <buffer> s* :Sort +social.*<CR>:Fold +\S*<CR>
+map <buffer> s1 :Sort +1.*<CR>
+map <buffer> s2 :Sort +2.*<CR>
+map <buffer> s3 :Sort +3.*<CR>
+map <buffer> s4 :Sort +4.*<CR>
+map <buffer> s5 :Sort +5.*<CR>
+map <buffer> s6 :Sort +6.*<CR>
+map <buffer> s7 :Sort +7.*<CR>
+map <buffer> s8 :Sort +8.*<CR>
+map <buffer> sz :Sort +[1345678].*<CR>
+map <buffer> s! :Sort +1<CR>
+map <buffer> s@ :Sort +2<CR>
+map <buffer> s£ :Sort +3<CR>
+map <buffer> s$ :Sort +4<CR>
+map <buffer> s% :Sort +5<CR>
+map <buffer> s^ :Sort +6<CR>
+map <buffer> s& :Sort +7<CR>
+map <buffer> s* :Sort +8<CR>
+map <buffer> sZ :Sort .*+[1345678]<CR>
 
 nmap <buffer> s? :Sort ^.*(\S)[^@]*$<CR>
 
@@ -234,4 +212,4 @@ map <buffer> <leader>u :Update<CR>
 
 " }}}
 
-:normal sp
+:normal si

@@ -28,16 +28,29 @@ hi def link Tx green
 syn match Tl /^l .*/ containedin=ALL
 hi def link Tl red
 
-syn match Tr /#r\S*\>/ containedin=ALL
-hi def link Tr cyanu
+syn match Tr /@r/ containedin=ALL
+hi def link Tr yellowu
+syn match Trepeat /.*\(@r\)\@=.*/
+hi def link Trepeat yellow
+syn match Tn /@n/ containedin=ALL
+hi def link Tn blueu
+syn match Ttoday /.*\(@n\)\@=.*/
+hi def link Ttoday blue
+syn match Tt /@t/ containedin=ALL
+hi def link Tt cyanu
+syn match Ttomorrow /.*\(@t\)\@=.*/
+hi def link Ttomorrow cyan
 
 syn match Ttoday /.*\(@n\)\@=/
 hi def link Ttoday base2
 syn match Ttomorrow /.*\(@t\)\@=/
 hi def link Ttomorrow cyan
 
-syn match Thidden /^#.*/
+syn match Ttag /\<[+@#]\S\+\>/ containedin=ALLBUT,Ttitle,Thidden
+hi def link Ttag base01u
+
+syn match Ttitle /^#.*/
+hi def link Ttitle base2u
+syn match Thidden /^# vim/
 hi def link Thidden base01
 
-syn match Ttag /\<[+@#]\S\+\>/ containedin=ALL
-hi def link Ttag base01u
