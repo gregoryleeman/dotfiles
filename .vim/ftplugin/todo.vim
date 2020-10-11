@@ -9,19 +9,18 @@ setl nowrap
 setl fo-=o
 
 fu! SearchFoldText() " {{{
-	if getline(v:foldstart) =~ "^§$"
+	if getline(v:foldstart) =~ "^§.*$"
 		return repeat("-", 79) . repeat(" ", winwidth(0))
 	else
-		if getline(v:foldstart) =~ ".*+\S*.*"
-			let linematch = matchstr(getline(v:foldstart), "+\\S*\\>")
-			return "# " . linematch . " +" . repeat(" ", winwidth(0))
-		endif 
+		" if getline(v:foldstart) =~ ".*+\S*.*"
+		" 	let linematch = matchstr(getline(v:foldstart), "+\\S*\\>")
+		" 	return "# " . linematch . " +" . repeat(" ", winwidth(0))
+		" endif 
 		return trim(getline(v:foldstart))[0:-1] . " +" . repeat(" ", winwidth(0))
 	endif
 endfu
 
 " }}}
-
 fu! Fold(search) " {{{
 	let foldstart = 0
 	let foldend = 0
@@ -29,34 +28,23 @@ fu! Fold(search) " {{{
 	for i in range(1, line('$'))
 		let line = getline(i)
 		let linematch = matchstr(line, a:search)
-		if line =~ a:search && linematch != foldmatch || line =~ "^# vim.*"
-			let foldend = i - 1 
-			if foldstart != 0 
-				execute foldstart.",".foldend."fold"
-			endif
-			let foldstart = i
-			let foldmatch = linematch
-		endif
-	endfor
-endfu
 
-" }}}
-fu! Fold2(start,end) " {{{
-	let foldinit = 0
-	let foldstart = 0
-	let foldend = 0
-	let foldmatch = ""
-	for i in range(1, line('$'))
-		let line = getline(i)
-		if foldinit == 1 && line =~ a:end || line =~ "^# vim.*"
-			let foldend = i - 1 
-			execute foldstart.",".foldend."fold"
-			let foldinit = 0
+		if foldstart != 0
+			if line !~ a:search || line =~ a:search && linematch != foldmatch 
+				let foldend = i - 1 
+				execute foldstart.",".foldend."fold"
+				let foldstart = 0
+				let foldmatch = ""
+			endif
 		endif
-		if foldinit == 0 && line =~ a:start
-			let foldstart = i
-			let foldinit = 1
+
+		if foldstart == 0
+			if line =~ a:search
+				let foldstart = i
+				let foldmatch = linematch
+			endif
 		endif
+
 	endfor
 endfu
 
@@ -70,13 +58,13 @@ fu! Sort(search) " {{{
 	if search(search,'nw')
 		execute "normal!
 			\:sort /".search."/r\<CR>
-			\:sort /^# vim/r\<CR>
+			\:sort /^#.* vim/r\<CR>
 			\/".search."\\|^\\(\\(.*[@+§].*\\|.*([A-Z])\\)\\@!.\\)*$\<CR>"
 		:call SearchFold()
 		execute "normal /".search."\<CR>ggn0"
 	else
 		execute "normal!
-			\:sort /^# vim/r\<CR>
+			\:sort /^#.* vim/r\<CR>
 			\/^\\(\\(.*[@+§].*\\|.*([A-Z])\\)\\@!.\\)*$\<CR>"
 		:call SearchFold()
 	endif
@@ -121,26 +109,28 @@ endfu
 " }}}
 fu! Tag(line1, line2, tag) " {{{
 	:normal! mm
-	execute "normal!:".a:line1.",".a:line2."s/".a:tag."/%/e\<CR>"
-	execute "normal!:".a:line1.",".a:line2."s/\\(^.*%.*\\)\\@<!\\s*$/ ".a:tag."/e\<CR>"
+	execute "normal!:".a:line1.",".a:line2."s/@".a:tag."/%/e\<CR>"
+	execute "normal!:".a:line1.",".a:line2."s/\\(^.*[@%].*\\)\\@<!\\s*$/ @".a:tag."/e\<CR>"
+	execute "normal!:".a:line1.",".a:line2."s/@\\S\\+/@".a:tag."/e\<CR>"
 	execute "normal!:".a:line1.",".a:line2."s/\\s*%//e\<CR>"
 	:normal! `mj
 endfu 
 
 " }}}
 fu! Update() " {{{
-	:%s/^[xl] \(.*@r\)\@=//g
+	:%s/^[xl] \(.*@h\)\@=//g
 	:%s/\(^[xl] .*\)\@<= @n\S*//g
 	:%s/\(([A-Z]).*\)\@<=@t/@n/g
 endfu 
 
 " }}}
 fu! Clear() " {{{
-	:%s/\(([A-Z]).*\)\@<=\s*@[^ r]//g
+	:%s/\(([A-Z]).*\)\@<=\s*@[^ h]//g
 endfu 
 
 " }}}
 
+" commands {{{
 command! -nargs=1 Sort :call Sort(<f-args>)
 command! -nargs=1 Fold :call Fold(<f-args>)
 command! -nargs=1 Fold2 :call Fold2(<f-args>)
@@ -151,59 +141,69 @@ command! -nargs=* -range Tag :call Tag(<line1>, <line2>, <f-args>)
 command! Update :call Update() 
 command! Clear :call Clear() 
 
-" mappings {{{ 
+" }}}
+" mappings {{{
 map <buffer> <leader>a :Priority A<CR>
 map <buffer> <leader>b :Priority B<CR>
 map <buffer> <leader>c :Priority C<CR>
-map <buffer> <leader>d :Priority D<CR>
 map <buffer> <leader>e :Priority E<CR>
-map <buffer> <leader>h :Priority H<CR>
 map <buffer> <leader>m :Priority M<CR>
 map <buffer> <leader>w :Priority W<CR>
+map <buffer> <leader>s :Priority S<CR>
 
-map <buffer> <leader>n :Tag @n<CR>
-map <buffer> <leader>t :Tag @t<CR>
-map <buffer> <leader>r :Tag @r<CR>
+map <buffer> <leader>n :Tag n<CR>
+map <buffer> <leader>t :Tag t<CR>
+map <buffer> <leader>h :Tag h<CR>
+map <buffer> <leader>r :Tag r<CR>
 
 map <buffer> <leader>x :Done x<CR>
 map <buffer> <leader>l :Done l<CR>
 
-nmap <buffer> si :Sort (\S)<CR>
-nmap <buffer> sp :Sort +\S*<CR>:Fold +[0-9]<CR>
-
-nmap <buffer> sn :Sort .*@[nr]<CR>
-nmap <buffer> st :Sort .*@[tr]<CR>
-nmap <buffer> sr :Sort .*@r<CR>
-
 nmap <buffer> sa :Sort (A)<CR>
 nmap <buffer> sb :Sort (B)<CR>
 nmap <buffer> sc :Sort (C)<CR>
-nmap <buffer> sd :Sort (D)<CR>
 nmap <buffer> se :Sort (E)<CR>
-nmap <buffer> sh :Sort (H)<CR>
 nmap <buffer> sm :Sort (M)<CR>
-nmap <buffer> sw :Sort (W)<CR>
+nmap <buffer> ss :Sort ([SW])<CR>
+nmap <buffer> sw :Sort ([SW])<CR>
 
-map <buffer> s1 :Sort +1.*<CR>
-map <buffer> s2 :Sort +2.*<CR>
-map <buffer> s3 :Sort +3.*<CR>
-map <buffer> s4 :Sort +4.*<CR>
-map <buffer> s5 :Sort +5.*<CR>
-map <buffer> s6 :Sort +6.*<CR>
-map <buffer> s7 :Sort +7.*<CR>
-map <buffer> s8 :Sort +8.*<CR>
-map <buffer> sz :Sort +[1345678].*<CR>
-map <buffer> s! :Sort +1<CR>
-map <buffer> s@ :Sort +2<CR>
-map <buffer> s£ :Sort +3<CR>
-map <buffer> s$ :Sort +4<CR>
-map <buffer> s% :Sort +5<CR>
-map <buffer> s^ :Sort +6<CR>
-map <buffer> s& :Sort +7<CR>
-map <buffer> s* :Sort +8<CR>
-map <buffer> sZ :Sort .*+[1345678]<CR>
+map <buffer> sj :Sort +[0-9].*<CR>:Fold +[0-9]_\S\+<CR>:Fold +[0-9]<CR>
+map <buffer> so :Sort +[0-9]<CR>:Fold +[0-9]<CR>
+map <buffer> sp sjvGzo
+map <buffer> s1 sj/+1<CR>zO<Esc>
+map <buffer> s2 sj/+2<CR>zO<Esc>
+map <buffer> s3 sj/+3<CR>zO<Esc>
+map <buffer> s4 sj/+4<CR>zO<Esc>
+map <buffer> s5 sj/+5<CR>zO<Esc>
+map <buffer> s6 sj/+6<CR>zO<Esc>
+map <buffer> s7 sj/+7<CR>zO<Esc>
+map <buffer> s8 sj/+8<CR>zO<Esc>
+map <buffer> s! so/+1<CR>zo<Esc>
+map <buffer> s@ so/+2<CR>zo<Esc>
+map <buffer> s£ so/+3<CR>zo<Esc>
+map <buffer> s$ so/+4<CR>zo<Esc>
+map <buffer> s% so/+5<CR>zo<Esc>
+map <buffer> s^ so/+6<CR>zo<Esc>
+map <buffer> s& so/+7<CR>zo<Esc>
+map <buffer> s* so/+8<CR>zo<Esc>
+
+map <buffer> sz :Sort .*+[1345678]<CR>
 
 nmap <buffer> s? :Sort ^.*(\S)[^@]*$<CR>
+
+nmap <buffer> si :Sort (\S)<CR>
+
+nmap <buffer> sn :Sort @[nhr]\S*<CR>
+nmap <buffer> sN :Sort \(+[0-9]\(.*@[nh]\)\@=\\|\(^# \)\@<=+[0-9]\( \)\@=\)<CR>
+nmap <buffer> st :Sort @[thr]\S*<CR>
+nmap <buffer> sT :Sort \(+[0-9]\(.*@[th]\)\@=\\|\(^# \)\@<=+[0-9]\( \)\@=\)<CR>
+nmap <buffer> sh :Sort @[hr]\S*<CR>
+nmap <buffer> sH :Sort \(+[0-9]\(.*@[hr]\)\@=\\|\(^# \)\@<=+[0-9]\( \)\@=\)<CR>
+nmap <buffer> sr sh
+nmap <buffer> sR sH
+
+nmap <buffer> sx :Sort ^[xl]<CR>
+nmap <buffer> sl :Sort ^[xl]<CR>
 
 nmap <buffer> o :NewLine o<CR>
 nmap <buffer> O :NewLine O<CR>
@@ -212,4 +212,4 @@ map <buffer> <leader>u :Update<CR>
 
 " }}}
 
-:normal si
+:normal sN
