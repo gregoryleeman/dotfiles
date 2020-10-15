@@ -25,19 +25,19 @@ hi def link Tx green
 syn match Tl /^l .*/ containedin=ALL
 hi def link Tl red
 
-syn match Tr /@r/ containedin=Ttag
+syn match Tr /@r\S*/ containedin=Ttag
 hi def link Tr cyanu 
 syn match Tremember /.*\(@r\)\@=.*/
 hi def link Tremember cyan
-syn match Th /@h/ containedin=Ttag
+syn match Th /@h\S*/ containedin=Ttag
 hi def link Th yellowu
 syn match Thabit /.*\(@h\)\@=.*/
 hi def link Thabit yellow
-syn match Tn /@n/ containedin=Ttag
+syn match Tn /@n\S*/ containedin=Ttag
 hi def link Tn base2u
 syn match Ttoday /.*\(@n\)\@=.*/
 hi def link Ttoday base2
-syn match Tt /@t/ containedin=Ttag
+syn match Tt /@t\S*/ containedin=Ttag
 hi def link Tt violetu
 syn match Ttomorrow /.*\(@t\)\@=.*/
 hi def link Ttomorrow violet

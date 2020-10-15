@@ -118,8 +118,8 @@ endfu
 
 " }}}
 fu! Update() " {{{
-	:%s/^[xl] \(.*@h\)\@=//g
-	:%s/\(^[xl] .*\)\@<= @n\S*//g
+	:%s/^[xl] \(.*@[hr]\)\@=//g
+	:%s/\(^[xl] .*\)\@<=\s*@n\S*//g
 	:%s/\(([A-Z]).*\)\@<=@t/@n/g
 endfu 
 
@@ -193,11 +193,11 @@ nmap <buffer> s? :Sort ^.*(\S)[^@]*$<CR>
 
 nmap <buffer> si :Sort (\S)<CR>
 
-nmap <buffer> sn :Sort @[nhr]\S*<CR>
+nmap <buffer> sn :Sort \(@[nhr]*\)\@<=\S\><CR>
 nmap <buffer> sN :Sort \(+[0-9]\(.*@[nh]\)\@=\\|\(^# \)\@<=+[0-9]\( \)\@=\)<CR>
-nmap <buffer> st :Sort @[thr]\S*<CR>
+nmap <buffer> st :Sort \(@[thr]*\)\@<=\S\><CR>
 nmap <buffer> sT :Sort \(+[0-9]\(.*@[th]\)\@=\\|\(^# \)\@<=+[0-9]\( \)\@=\)<CR>
-nmap <buffer> sh :Sort @[hr]\S*<CR>
+nmap <buffer> sh :Sort \(@h*\)\@<=\S\><CR>
 nmap <buffer> sH :Sort \(+[0-9]\(.*@[hr]\)\@=\\|\(^# \)\@<=+[0-9]\( \)\@=\)<CR>
 nmap <buffer> sr sh
 nmap <buffer> sR sH
