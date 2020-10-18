@@ -107,25 +107,33 @@ fu! Done(line1, line2, n) " {{{
 endfu 
 
 " }}}
+
 fu! Tag(line1, line2, tag) " {{{
 	:normal! mm
-	execute "normal!:".a:line1.",".a:line2."s/@".a:tag."/%/e\<CR>"
-	execute "normal!:".a:line1.",".a:line2."s/\\(^.*[@%].*\\)\\@<!\\s*$/ @".a:tag."/e\<CR>"
-	execute "normal!:".a:line1.",".a:line2."s/@\\S\\+/@".a:tag."/e\<CR>"
-	execute "normal!:".a:line1.",".a:line2."s/\\s*%//e\<CR>"
+	if a:tag =~ "[0-9]"
+		execute "normal!:".a:line1.",".a:line2."s/\\(@[a-z]\\)\\@<=[0-9]*\\(%\\)\\@!/".a:tag."%/e\<CR>"
+		execute "normal!:".a:line1.",".a:line2."s/\\(^.*[@%].*\\)\\@<!\\s*$/ @n".a:tag."/e\<CR>"
+		execute "normal!:".a:line1.",".a:line2."s/\\s*%//e\<CR>"
+	elseif a:tag =~ "[a-z]"
+		execute "normal!:".a:line1.",".a:line2."s/@".a:tag."\\S*/%/e\<CR>"
+		execute "normal!:".a:line1.",".a:line2."s/\\(@\\)\\@<=[a-z]/".a:tag."/e\<CR>"
+		execute "normal!:".a:line1.",".a:line2."s/\\(^.*[@%].*\\)\\@<!\\s*$/ @".a:tag."0/e\<CR>"
+		execute "normal!:".a:line1.",".a:line2."s/\\s*%//e\<CR>"
+	endif
 	:normal! `mj
 endfu 
 
 " }}}
+
 fu! Update() " {{{
-	:%s/^[xl] \(.*@[hr]\)\@=//g
-	:%s/\(^[xl] .*\)\@<=\s*@n\S*//g
-	:%s/\(([A-Z]).*\)\@<=@t/@n/g
+	:%s/^[xl] \(.*@[hr]\)\@=//ge
+	:%s/\(^[xl] .*\)\@<=\s*@n\S*//ge
+	:%s/\(([A-Z]).*\)\@<=@t/@n/ge
 endfu 
 
 " }}}
 fu! Clear() " {{{
-	:%s/\(([A-Z]).*\)\@<=\s*@[^ h]//g
+	:%s/\(([A-Z]).*\)\@<=\s*@[^ h]\S*//g
 endfu 
 
 " }}}
@@ -143,18 +151,25 @@ command! Clear :call Clear()
 
 " }}}
 " mappings {{{
+
 map <buffer> <leader>a :Priority A<CR>
 map <buffer> <leader>b :Priority B<CR>
 map <buffer> <leader>c :Priority C<CR>
+map <buffer> <leader>d :Priority D<CR>
 map <buffer> <leader>e :Priority E<CR>
 map <buffer> <leader>m :Priority M<CR>
 map <buffer> <leader>w :Priority W<CR>
 map <buffer> <leader>s :Priority S<CR>
 
 map <buffer> <leader>n :Tag n<CR>
-map <buffer> <leader>t :Tag t<CR>
 map <buffer> <leader>h :Tag h<CR>
-map <buffer> <leader>r :Tag r<CR>
+map <buffer> <leader>t :Tag t<CR>
+map <buffer> <leader>0 :Tag 0<CR>
+map <buffer> <leader>1 :Tag 1<CR>
+map <buffer> <leader>2 :Tag 2<CR>
+map <buffer> <leader>3 :Tag 3<CR>
+map <buffer> <leader>4 :Tag 4<CR>
+map <buffer> <leader>5 :Tag 5<CR>
 
 map <buffer> <leader>x :Done x<CR>
 map <buffer> <leader>l :Done l<CR>
@@ -193,14 +208,12 @@ nmap <buffer> s? :Sort ^.*(\S)[^@]*$<CR>
 
 nmap <buffer> si :Sort (\S)<CR>
 
-nmap <buffer> sn :Sort \(@[nhr]*\)\@<=\S\><CR>
+nmap <buffer> sn :Sort \(@[nh]*\)\@<=[0-9]*\><CR>
 nmap <buffer> sN :Sort \(+[0-9]\(.*@[nh]\)\@=\\|\(^# \)\@<=+[0-9]\( \)\@=\)<CR>
-nmap <buffer> st :Sort \(@[thr]*\)\@<=\S\><CR>
+nmap <buffer> st :Sort \(@[th]*\)\@<=[0-9]*\><CR>
 nmap <buffer> sT :Sort \(+[0-9]\(.*@[th]\)\@=\\|\(^# \)\@<=+[0-9]\( \)\@=\)<CR>
-nmap <buffer> sh :Sort \(@h*\)\@<=\S\><CR>
+nmap <buffer> sh :Sort \(@[hr]*\)\@<=[0-9]*\><CR>
 nmap <buffer> sH :Sort \(+[0-9]\(.*@[hr]\)\@=\\|\(^# \)\@<=+[0-9]\( \)\@=\)<CR>
-nmap <buffer> sr sh
-nmap <buffer> sR sH
 
 nmap <buffer> sx :Sort ^[xl]<CR>
 nmap <buffer> sl :Sort ^[xl]<CR>

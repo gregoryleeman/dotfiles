@@ -11,6 +11,8 @@ syn match Tb /(B)/ containedin=ALLBUT,Tx,Tl,Thidden
 hi def link Tb blue
 syn match Tc /(C)/ containedin=ALLBUT,Tx,Tl,Thidden
 hi def link Tc green
+syn match Td /(D)/ containedin=ALLBUT,Tx,Tl,Thidden
+hi def link Td cyan
 syn match Te /(E)/ containedin=ALLBUT,Tx,Tl,Thidden
 hi def link Te yellow
 syn match Tw /(W)/ containedin=ALLBUT,Tx,Tl,Thidden
@@ -25,18 +27,14 @@ hi def link Tx green
 syn match Tl /^l .*/ containedin=ALL
 hi def link Tl red
 
-syn match Tr /@r\S*/ containedin=Ttag
-hi def link Tr cyanu 
-syn match Tremember /.*\(@r\)\@=.*/
-hi def link Tremember cyan
 syn match Th /@h\S*/ containedin=Ttag
 hi def link Th yellowu
 syn match Thabit /.*\(@h\)\@=.*/
 hi def link Thabit yellow
 syn match Tn /@n\S*/ containedin=Ttag
-hi def link Tn base2u
+hi def link Tn cyanu
 syn match Ttoday /.*\(@n\)\@=.*/
-hi def link Ttoday base2
+hi def link Ttoday cyan
 syn match Tt /@t\S*/ containedin=Ttag
 hi def link Tt violetu
 syn match Ttomorrow /.*\(@t\)\@=.*/
@@ -49,7 +47,7 @@ syn match Tlink /^\(http\|www\)\S\+/
 hi def link Tlink blueu
 syn match Ttitle /^#.*/
 hi def link Ttitle base1u
-syn match Ttitlebold /^# +[0-9] .*/ containedin=Ttitle
+syn match Ttitlebold /^# [+@][0-9] .*/ containedin=Ttitle
 hi def link Ttitlebold base3u
 syn match Thidden /^#.*vim.*/
 syn match Thidden /.*#maybe.*/
